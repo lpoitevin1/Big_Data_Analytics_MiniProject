@@ -46,7 +46,7 @@ def request(category, cpt, listMissTop, oldTop=None) :
     return df,oldTop
 
 
-# In[ ]:
+# In[4]:
 
 
 oldTop = None
@@ -64,33 +64,33 @@ while cpt < N_request :
 
 # # Conversion dataframe
 
-# In[ ]:
+# In[5]:
 
 
 df = pd.concat(listCourse)
 df['vitesse'] = 0
 
 
-# In[ ]:
+# In[6]:
 
 
 df.loc[df.iterration_update == 0,'vitesse'] = -1
 df.head(20)
 
 
-# In[ ]:
+# In[7]:
 
 
 df = df.sort_values(by=['id','top'])
 
 
-# In[ ]:
+# In[8]:
 
 
 df ['ecart_position_avec_precedent'] = df.groupby('id')['position'].diff()
 
 
-# In[ ]:
+# In[9]:
 
 
 df ['acceleration'] = df.groupby('id')['ecart_position_avec_precedent'].diff()
@@ -98,21 +98,21 @@ df ['acceleration'] = df.groupby('id')['ecart_position_avec_precedent'].diff()
 
 # # Calcul des vitesses
 
-# In[ ]:
+# In[10]:
 
 
 df_ecart = df[df['vitesse'] != -1]
 df_ecart
 
 
-# In[ ]:
+# In[11]:
 
 
 df_ecart = df_ecart.drop('vitesse', 1)
 df_ecart
 
 
-# In[ ]:
+# In[12]:
 
 
 df_ecart = df_ecart.loc[:,~df_ecart.columns.duplicated()]
@@ -120,19 +120,19 @@ df_ecart = df_ecart.reset_index(drop=True)
 df_ecart
 
 
-# In[ ]:
+# In[13]:
 
 
 df_join = df_ecart.groupby('id').agg(lambda x: x.tolist())
 
 
-# In[ ]:
+# In[14]:
 
 
 df_join['acceleration'].apply(lambda x : x.pop(0))
 
 
-# In[ ]:
+# In[15]:
 
 
 df_join['distraite'] = None
@@ -144,13 +144,13 @@ df_join
 
 # # Visualisation 
 
-# In[ ]:
+# In[16]:
 
 
 listMissTop
 
 
-# In[ ]:
+# In[17]:
 
 
 fig, ax = plt.subplots(figsize=(8,6))
@@ -165,7 +165,7 @@ plt.show()
 
 # Les tortues fatiguées s’endorment au fur et à mesure qu’elles avancent. Leur vitesse diminue à un rythme constant jusqu’à tomber à 0. Ces tortues se réveillent alors et recommencent à accélérer (au même rythme qu’elles ont ralenti) jusqu’à atteindre le vitesse initiale, puis elles recommencent alors à s’endormir. Il est possible que le rythme de (décroissance) soit différent au moment de l’arrêt de la tortue et au moment où elle termine sa réaccélération à sa vitesse de départ. On prendra la convention que les tortues fatiguées et cycliques sont considérées comme fatiguées, mais pas comme cycliques. (paramètres: vitesse initiale et rythme de (dé)croissance)
 
-# In[ ]:
+# In[18]:
 
 
 def detectMissTopVitesse(cpt, array_miss_top):
@@ -185,7 +185,7 @@ def detectMissTopAcceleration(cpt, array_miss_top):
         
 
 
-# In[ ]:
+# In[19]:
 
 
 # Detection des tortues régulières
@@ -237,7 +237,7 @@ def detect_regular(df_join,id) :
         return False
 
 
-# In[ ]:
+# In[20]:
 
 
 def detect_cycle(df_join,id, array_miss_top):
@@ -341,7 +341,7 @@ def detect_cycle(df_join,id, array_miss_top):
         return False
 
 
-# In[ ]:
+# In[21]:
 
 
 import heapq
@@ -428,27 +428,27 @@ def detect_tired(df_join,id,array_miss_top):
         return False
 
 
-# In[ ]:
+# In[22]:
 
 
 df_join['ecart_position_avec_precedent'][0][0]
 
 
-# In[ ]:
+# In[23]:
 
 
 def detect_distraite(df_join,id) :
     if df_join['fatigue'][id] == False :
         if df_join['regulier'][id] == False :
             if df_join['cyclique'][id] == False :
-                min_vitesse = np.array(df['ecart_position_avec_precedent'][id]).min()
-                max_vitesse = np.array(df['ecart_position_avec_precedent'][id]).max()
+                min_vitesse = np.array(df_join['ecart_position_avec_precedent'][id]).min()
+                max_vitesse = np.array(df_join['ecart_position_avec_precedent'][id]).max()
                 
                 return True,min_vitesse,max_vitesse
     return False
 
 
-# In[ ]:
+# In[24]:
 
 
 listMissTop
@@ -456,13 +456,13 @@ listMissTop
 
 # # Detection des tortues
 
-# In[ ]:
+# In[25]:
 
 
 df_join = df_join.reset_index()
 
 
-# In[ ]:
+# In[26]:
 
 
 def analyse_detection(df_join):
@@ -483,26 +483,32 @@ def analyse_detection(df_join):
     return df_join
 
 
-# In[ ]:
+# In[27]:
 
 
 df_resultat = analyse_detection(df_join)
 
 
-# In[ ]:
+# In[28]:
 
 
 df_resultat
 
 
-# In[ ]:
+# In[29]:
 
 
-df_resultat.iloc[:,6:].to_csv("resultat.csv", sep='\t', encoding='utf-8')
+df_resultat.iloc[:,6:].to_csv("resultat.csv", encoding='utf-8')
 
 
-# In[ ]:
+# In[30]:
 
 
-df_resultat.to_csv("dataframe_apres_traitement.csv",sep="\t",encoding="utf-8")
+df_resultat.iloc[:,6:].reset_index()
+
+
+# In[31]:
+
+
+df_resultat.to_csv("dataframe_apres_traitement.csv",encoding="utf-8")
 
