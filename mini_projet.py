@@ -46,7 +46,7 @@ def request(category, cpt, listMissTop, oldTop=None) :
     return df,oldTop
 
 
-# In[4]:
+# In[ ]:
 
 
 oldTop = None
@@ -64,33 +64,33 @@ while cpt < N_request :
 
 # # Conversion dataframe
 
-# In[5]:
+# In[ ]:
 
 
 df = pd.concat(listCourse)
 df['vitesse'] = 0
 
 
-# In[6]:
+# In[ ]:
 
 
 df.loc[df.iterration_update == 0,'vitesse'] = -1
 df.head(20)
 
 
-# In[7]:
+# In[ ]:
 
 
 df = df.sort_values(by=['id','top'])
 
 
-# In[8]:
+# In[ ]:
 
 
 df ['ecart_position_avec_precedent'] = df.groupby('id')['position'].diff()
 
 
-# In[9]:
+# In[ ]:
 
 
 df ['acceleration'] = df.groupby('id')['ecart_position_avec_precedent'].diff()
@@ -98,21 +98,21 @@ df ['acceleration'] = df.groupby('id')['ecart_position_avec_precedent'].diff()
 
 # # Calcul des vitesses
 
-# In[10]:
+# In[ ]:
 
 
 df_ecart = df[df['vitesse'] != -1]
 df_ecart
 
 
-# In[11]:
+# In[ ]:
 
 
 df_ecart = df_ecart.drop('vitesse', 1)
 df_ecart
 
 
-# In[12]:
+# In[ ]:
 
 
 df_ecart = df_ecart.loc[:,~df_ecart.columns.duplicated()]
@@ -120,23 +120,23 @@ df_ecart = df_ecart.reset_index(drop=True)
 df_ecart
 
 
-# In[13]:
+# In[ ]:
 
 
 df_join = df_ecart.groupby('id').agg(lambda x: x.tolist())
 
 
-# In[14]:
+# In[ ]:
 
 
 df_join['acceleration'].apply(lambda x : x.pop(0))
 
 
-# In[15]:
+# In[ ]:
 
 
 df_join['distraite'] = None
-df_join['endormie'] = None
+df_join['fatigue'] = None
 df_join['cyclique'] = None
 df_join['regulier'] = None
 df_join
@@ -144,7 +144,13 @@ df_join
 
 # # Visualisation 
 
-# In[52]:
+# In[ ]:
+
+
+listMissTop
+
+
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(8,6))
@@ -159,7 +165,7 @@ plt.show()
 
 # Les tortues fatiguées s’endorment au fur et à mesure qu’elles avancent. Leur vitesse diminue à un rythme constant jusqu’à tomber à 0. Ces tortues se réveillent alors et recommencent à accélérer (au même rythme qu’elles ont ralenti) jusqu’à atteindre le vitesse initiale, puis elles recommencent alors à s’endormir. Il est possible que le rythme de (décroissance) soit différent au moment de l’arrêt de la tortue et au moment où elle termine sa réaccélération à sa vitesse de départ. On prendra la convention que les tortues fatiguées et cycliques sont considérées comme fatiguées, mais pas comme cycliques. (paramètres: vitesse initiale et rythme de (dé)croissance)
 
-# In[48]:
+# In[ ]:
 
 
 def detectMissTopVitesse(cpt, array_miss_top):
@@ -179,7 +185,7 @@ def detectMissTopAcceleration(cpt, array_miss_top):
         
 
 
-# In[49]:
+# In[ ]:
 
 
 # Detection des tortues régulières
@@ -231,7 +237,7 @@ def detect_regular(df_join,id) :
         return False
 
 
-# In[54]:
+# In[ ]:
 
 
 def detect_cycle(df_join,id, array_miss_top):
@@ -330,30 +336,12 @@ def detect_cycle(df_join,id, array_miss_top):
             cpt_current_element += 1
         #print(cpt_current_element)
     if test_cycle == True :
-        return True,df_join['ecart_position_avec_precedent'][id][index_tab_vitesse_initial:index_tab_vitesse_initial+len_cycle]
+        return True,df_join['ecart_position_avec_precedent'][id][index_tab_vitesse_initial:(index_tab_vitesse_initial+len_cycle)]
     else :
         return False
 
 
-# In[51]:
-
-
-detect_cycle(df_join,0,listMissTop)
-
-
-# In[46]:
-
-
-df_join['ecart_position_avec_precedent'][0]
-
-
-# In[21]:
-
-
-listMissTop
-
-
-# In[23]:
+# In[ ]:
 
 
 import heapq
@@ -380,7 +368,7 @@ def detect_tired(df_join,id,array_miss_top):
     acceleration_initiale = unique_elements[second_index]
     #print(df['ecart_position_avec_precedent'][id])
     index_vitesse_initiale = (list(array_abs).index(acceleration_initiale))
-    vitesse_initiale = np.array(df['ecart_position_avec_precedent'][id])[index_vitesse_initiale]
+    vitesse_initiale = np.array(df_join['ecart_position_avec_precedent'][id][0])
     cpt_miss = 0
     value = unique_elements[index]
     #print(value)
@@ -440,19 +428,19 @@ def detect_tired(df_join,id,array_miss_top):
         return False
 
 
-# In[24]:
+# In[ ]:
 
 
-listMissTop
+df_join['ecart_position_avec_precedent'][0][0]
 
 
-# In[25]:
+# In[ ]:
 
 
-def detect_distraite(df,id) :
-    if df['endormie'][id] == False :
-        if df['regulier'][id] == False :
-            if df['cyclique'][id] == False :
+def detect_distraite(df_join,id) :
+    if df_join['fatigue'][id] == False :
+        if df_join['regulier'][id] == False :
+            if df_join['cyclique'][id] == False :
                 min_vitesse = np.array(df['ecart_position_avec_precedent'][id]).min()
                 max_vitesse = np.array(df['ecart_position_avec_precedent'][id]).max()
                 
@@ -460,7 +448,7 @@ def detect_distraite(df,id) :
     return False
 
 
-# In[26]:
+# In[ ]:
 
 
 listMissTop
@@ -468,39 +456,53 @@ listMissTop
 
 # # Detection des tortues
 
-# In[27]:
+# In[ ]:
 
 
 df_join = df_join.reset_index()
 
 
-# In[28]:
+# In[ ]:
 
 
 def analyse_detection(df_join):
     array_id = df_join['id'].unique()
     for i in array_id :
-        df_join['endormie'][i] = detect_tired(df_join, i,listMissTop)
+        df_join['fatigue'][i] = detect_tired(df_join, i,listMissTop)
         df_join['regulier'][i] = detect_regular(df_join, i)
         df_join['cyclique'][i] = detect_cycle(df_join,i,listMissTop)
         df_join['distraite'][i] = detect_distraite(df_join,i)
+    # on verifie pour les endormies et cycliques 
+    
+    
+    for i in array_id :
+        if df_join['cyclique'][i] != False and df_join['fatigue'][i] != False :
+            print("id concerné :"+str(i))
+            df_join['cyclique'][i] = False
+
     return df_join
 
 
-# In[29]:
+# In[ ]:
 
 
 df_resultat = analyse_detection(df_join)
 
 
-# In[35]:
+# In[ ]:
 
 
 df_resultat
 
 
-# In[34]:
+# In[ ]:
 
 
-df_resultat.to_csv("resultat.csv", sep='\t', encoding='utf-8')
+df_resultat.iloc[:,6:].to_csv("resultat.csv", sep='\t', encoding='utf-8')
+
+
+# In[ ]:
+
+
+df_resultat.to_csv("dataframe_apres_traitement.csv",sep="\t",encoding="utf-8")
 

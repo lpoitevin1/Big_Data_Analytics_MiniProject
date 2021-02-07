@@ -6,11 +6,11 @@ Numero : 11410541
 # Description
 
 Le programme python est découpé chronologiquement de la manière suivante : 
--Une partie acquisition des données, on recupère les données de la course avec un interval ~ 3sec (utilisation de sleep) sur le serveur distant
--Une partie nettoyage et modélisation de nos données avec mise en forme sous type de DataFrame (pandas)
--Une partie visualisation pour voir les tendances de nos données ainsi que voir les points de rattage de top.
--Une partie typage qui décrit les fonctions qui vont permettre d'identifier les différentes tortues selon leurs caractéristiques de vitesse et d'accélération
--Une partie detection qui traite nos données avec les fonctions de types
+* Une partie acquisition des données, on recupère les données de la course avec un interval ~ 3sec (utilisation de sleep) sur le serveur distant
+* Une partie nettoyage et modélisation de nos données avec mise en forme sous type de DataFrame (pandas)
+* Une partie visualisation pour voir les tendances de nos données ainsi que voir les points de rattage de top.
+* Une partie typage qui décrit les fonctions qui vont permettre d'identifier les différentes tortues selon leurs caractéristiques de vitesse et d'accélération
+* Une partie detection qui traite nos données avec les fonctions de types
 
 
 # Requirements
@@ -32,6 +32,8 @@ Ou  :
 <code> cd /chemin/du/projet </code>
 <code> jupyter notebook </code>
 
+### Le nombre de requêtes pour l'acquisition des données est fixée au nombre de 40.
+C'est la variable N_request dans le code.
 
 # Description fonction detection et principe d'algorithmique 
 
@@ -98,7 +100,7 @@ Donc si on a un "rattage" de top survenu a l'indice N dans le tableau des positi
 J'utilise pandas pour stocker dans un dataframe l'ensemble des valeurs de vitesse et d'acceleration de chaque tortue
 Je rajoute ensuite 4 colonne qui correspondent au types des tortues
 A la suite du traitement par la fonction analyse_detection(), ces 4 colonnes sont remplies par False ou True grâce aux fonctions de detections implémentées.
-La dataframe est ensuite converti en fichier csv "resultat.csv" pour stocker l'ensemble de nos résultats.
+La dataframe est ensuite converti en fichier csv "resultat.csv" pour stocker l'ensemble de nos résultats et pourquoi pas les réutiliser. Personnellement, je préfère visualiser l'état de mon dataframe panda.
 
 
 # Remarques
