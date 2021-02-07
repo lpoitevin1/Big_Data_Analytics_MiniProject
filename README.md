@@ -23,7 +23,7 @@ Mon programme à été conçu en python3, il est donc nécéssaire que nos varia
 Puis faites un <code> source .bashrc </code>
 
 Pour executer le programme : 
-<code> spark-submit mini_projet.py </code>
+* <code> spark-submit mini_projet.py </code>
 
 Si cela ne fonctionne pas pour quelconque problème de version, il est possible de l'executer via :
 <code> python3 mini_projet.py </code> 
@@ -106,6 +106,6 @@ Remarque : Lorsque la valeur est True pour une catégorie, le paramètre est aus
 # Remarques
 
 La detection de tortue cyclique ne marche pas correctement si un "rattage" de top a lieu à chaque fois au milieu du vraie cycle. 
-Ceci vient du fait que tant que mon algorithme est à la recherche d'un cycle potentiel et qu'un "rattage" de top survient (donc valeur abérante), il re-initialise le cycle potentiel qu'il été en train de constitué pour en redémarrer un autre.
+Ceci vient du fait que tant que mon algorithme est à la recherche d'un cycle potentiel et qu'un "rattage" de top survient (donc valeur abérante), il re-initialise le cycle potentiel qu'il été en train de constituer pour en redémarrer un autre.
 Dès lors qu'il trouve un cycle potentiel, il sait s'adapter pour l'évaluation de la comparaison du cycle potentiel avec avec la suite des valeurs du tableaux meme en cas de "rattage" de top. 
 
