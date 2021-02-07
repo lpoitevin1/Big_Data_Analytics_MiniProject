@@ -28,6 +28,10 @@ Pour executer le programme :
 Si cela ne fonctionne pas pour quelconque problème de version, il est possible de l'executer via :
 <code> python3 mini_projet.py </code> 
 
+Ou  :
+<code> cd /chemin/du/projet </code>
+<code> jupyter notebook </code>
+
 
 # Description fonction detection et principe d'algorithmique 
 
