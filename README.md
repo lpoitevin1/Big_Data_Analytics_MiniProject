@@ -17,8 +17,8 @@ Le programme python est découpé chronologiquement de la manière suivante :
 
 Mon programme à été conçu en python3, il est donc nécéssaire que nos variables d'environnement soient compatibles avec l'environnement de Spark. Ajoutez dans ~/.bashrc les lignes suivantes :
 
-<code> export SPARK_HOME=/chemin/vers/spark-3.0.1-bin-hadoop2.7 </code>
-<code> export PYSPARK_PYTHON=/usr/bin/python3 </code>
+* <code> export SPARK_HOME=/chemin/vers/spark-3.0.1-bin-hadoop2.7 </code>
+* <code> export PYSPARK_PYTHON=/usr/bin/python3 </code>
 
 Puis faites un <code> source .bashrc </code>
 
@@ -29,8 +29,8 @@ Si cela ne fonctionne pas pour quelconque problème de version, il est possible 
 <code> python3 mini_projet.py </code> 
 
 Ou  :
-<code> cd /chemin/du/projet </code>
-<code> jupyter notebook </code>
+* <code> cd /chemin/du/projet </code>
+* <code> jupyter notebook </code>
 
 ### Le nombre de requêtes pour l'acquisition des données est fixée au nombre de 40.
 C'est la variable N_request dans le code.
@@ -57,7 +57,7 @@ Ensuite pour chaque valeur du tableau d'acceleration :
         Si la valeur à gauche est ou la valeur à droite est égale a la valeur la plus fréquente alors on continue
         Sinon ce n'est pas une tortue fatiguée
 
-Paramètres retournées si c'est bien une tortue fatiguées :
+Paramètres retournées si c'est bien une tortue fatiguée :
 * Vitesse initiale : On prend la premiere valeur du tableau de vitesse
 * Rythme de (dé)croissance : Si c'est une tortue fatigué, on prend la valeur absolue de l'acceleration qui revient le plus fréquemment (les autres valeurs sont sensées êtres des moment de l’arrêt de la tortue)
 
@@ -100,8 +100,8 @@ Donc si on a un "rattage" de top survenu a l'indice N dans le tableau des positi
 J'utilise pandas pour stocker dans un dataframe l'ensemble des valeurs de vitesse et d'acceleration de chaque tortue
 Je rajoute ensuite 4 colonne qui correspondent au types des tortues
 A la suite du traitement par la fonction analyse_detection(), ces 4 colonnes sont remplies par False ou True grâce aux fonctions de detections implémentées.
-La dataframe est ensuite converti en fichier csv "resultat.csv" pour stocker l'ensemble de nos résultats et pourquoi pas les réutiliser. Personnellement, je préfère visualiser l'état de mon dataframe panda.
-
+La dataframe est ensuite converti en fichier csv "resultat.csv" pour stocker l'ensemble de nos résultats concernant uniquement les typages. Sinon le dataframe resultant est entierement stocké dans "dataframe_apres_traitement.csv"
+Remarque : Lorsque la valeur est True pour une catégorie, le paramètre est aussi stocké dans la colonne pour l'id concerné. Par manque de temps, je n'ai pas pu trouver une solution adaptée à mon code pour ajouter une colonne avec les parametres concernés pour le type de tortue/
 
 # Remarques
 
