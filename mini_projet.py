@@ -144,10 +144,9 @@ df_join
 
 # # Visualisation 
 
-# In[16]:
+# In[52]:
 
 
-id = 5
 fig, ax = plt.subplots(figsize=(8,6))
 
 for i, g in df.groupby('id'):
@@ -232,7 +231,7 @@ def detect_regular(df_join,id) :
         return False
 
 
-# In[50]:
+# In[54]:
 
 
 def detect_cycle(df_join,id, array_miss_top):
@@ -299,6 +298,8 @@ def detect_cycle(df_join,id, array_miss_top):
                 print("longueur: " + str(len_cycle))
                 #print(visited)
             
+            # Si on a pas de cycle potentiel, il faut comparer la fin des elements du tableau avec
+            # le cycle potentiel constitué. Il faut adapter un compteur pour les indices du cycles potentiels
             elif potential_cycle == True :
                 
                 if cpt_current_cycle == len_cycle and test_cycle == False :
@@ -310,7 +311,7 @@ def detect_cycle(df_join,id, array_miss_top):
                 elif cpt_current_cycle > len_cycle : 
                     cpt_current_cycle -= len_cycle
                 
-                print(str(cycle[cpt_current_cycle]) + ' et element acceleration '+str(e))
+                #print(str(cycle[cpt_current_cycle]) + ' et element acceleration '+str(e))
                 if detectMissTopVitesse(cpt_current_element,array_miss_top):
                     
                     cpt_current_cycle += 2
